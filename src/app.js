@@ -6,8 +6,7 @@
 const express = require('./config/express');
 
 const app = express();
-// const PORT = process.env.SENG365_PORT;
-const PORT = 80;
+const PORT = process.env.SENG365_PORT;
 
 // connect to MySQL on start
 // db.connect(function (err) {
