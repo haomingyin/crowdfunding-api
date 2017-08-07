@@ -1,10 +1,24 @@
 {
-  "name": "application-name",
+  "name": "Crowdfunding",
   "version": "0.0.1",
+  "description": "Crowdfunding project for SENG365",
+  "author": "Haoming Yin",
+  "repository": {
+    "type": "git",
+    "url": "https://eng-git.canterbury.ac.nz/seng365-2017/hyi25"
+  },
   "scripts": {
     "start": "node test.js"
   },
+  "keywords": [
+    "Crowdfunding",
+    "funding"
+  ],
+  "license": "Apache-2.0",
   "dependencies": {
-    "mysql": "^2.13.0"
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "lodash": "^4.17.4",
+    "mysql": "^2.14.1"
   }
 }
