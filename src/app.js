@@ -6,7 +6,8 @@ const db = require('./config/db');
 const express = require('./config/express');
 
 const app = express();
-const PORT = process.env.SENG365_PORT;
+// const PORT = process.env.SENG365_PORT;
+const PORT = 80;
 
 // connect to MySQL on start
 db.connect(function (err) {
@@ -22,4 +23,8 @@ db.connect(function (err) {
 app.get("/hi", function (req, res) {
     res.send("Hello world");
     res.end("That's it!");
+});
+
+app.listen(PORT, function () {
+    console.log('Listening on port: ' + PORT);
 });
