@@ -2,7 +2,7 @@
  * Created by haoming on 7/08/17.
  */
 
-const db = require('../../config/db.js');
+const db = require('../config/db.js');
 
 exports.getAll = function(cb){
     db.get().query("SELECT * FROM Users", function (err, result) {
