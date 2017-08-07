@@ -8,7 +8,7 @@
     "url": "https://eng-git.canterbury.ac.nz/seng365-2017/hyi25"
   },
   "scripts": {
-    "start": "node test.js"
+    "start": "node app.js"
   },
   "keywords": [
     "Crowdfunding",
