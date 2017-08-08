@@ -2,6 +2,8 @@ version: "2"
 services:
   app:
     build: .
+    ports:
+      - "4941:4941"
   mysql:
     image: "mysql:5.7"
     environment:
