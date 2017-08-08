@@ -104,3 +104,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 /package-lock.json
+.idea/

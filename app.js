@@ -1,5 +1,5 @@
-/*
-    The enter point of this app
+/**
+ *  The enter point of this app
  */
 
 // const db = require('./config/db');

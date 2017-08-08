@@ -2,7 +2,7 @@
  * Created by haoming on 7/08/17.
  */
 
-const express = require('config/express');
+const express = require('express');
 const bodyParser = require('body-parser');
 
 exports = module.exports = function () {
