@@ -12,7 +12,7 @@ exports = module.exports = function () {
         extended: true
     }));
 
-    // require('../app/routes/user.server.route.js')(app);
+    require('../app/routes/route.js')(app);
 
     return app;
 };
