@@ -35,7 +35,7 @@ CREATE INDEX projects_users_id_fk
 
 ALTER TABLE pledges
   ADD CONSTRAINT pledges_projects_id_fk
-FOREIGN KEY (project) REFERENCES seng365.projects (id);
+FOREIGN KEY (project) REFERENCES projects (id);
 
 CREATE TABLE IF NOT EXISTS rewards
 (
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS rewards
   amount      DOUBLE DEFAULT '0' NOT NULL,
   description TEXT               NOT NULL,
   CONSTRAINT rewards_projects_id_fk
-  FOREIGN KEY (project) REFERENCES seng365.projects (id)
+  FOREIGN KEY (project) REFERENCES projects (id)
 );
 
 CREATE INDEX rewards_projects_id_fk
@@ -53,7 +53,7 @@ CREATE INDEX rewards_projects_id_fk
 
 ALTER TABLE pledges
   ADD CONSTRAINT pledges_rewards_id_fk
-FOREIGN KEY (reward) REFERENCES seng365.rewards (id);
+FOREIGN KEY (reward) REFERENCES rewards (id);
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -69,9 +69,9 @@ CREATE TABLE IF NOT EXISTS users
 
 ALTER TABLE pledges
   ADD CONSTRAINT pledges_users_id_fk
-FOREIGN KEY (user) REFERENCES seng365.users (id);
+FOREIGN KEY (user) REFERENCES users (id);
 
 ALTER TABLE projects
   ADD CONSTRAINT projects_users_id_fk
-FOREIGN KEY (creator) REFERENCES seng365.users (id);
+FOREIGN KEY (creator) REFERENCES users (id);
 
