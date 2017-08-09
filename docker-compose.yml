@@ -5,13 +5,13 @@ services:
     ports:
       - "4879:4879"
     environment:
-      - SENG365_MYSQL_HOST=db
+      - SENG365_MYSQL_HOST=mysql
       - SENG365_MYSQL_PORT=3306
     depends_on:
       - mysql
-    links:
-      - mysql:db
   mysql:
     image: "mysql:5.7"
     environment:
       - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "6098:3306"

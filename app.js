@@ -19,8 +19,23 @@ let listen = function () {
     });
 };
 
-// first time connect to database
-db.connect(listen);
+// first time connect to database, wait 3 seconds for MySQL VM to set up
+let initialize = function () {
+    // first connect to database
+    db.connect(function () {
+        // then initialize db schema
+        db.initialize(function (err) {
+            // if fail to initialize db, wait for 2 second then redo it.
+            if (err) {
+                setTimeout(initialize, 2000);
+            } else {
+                listen();
+            }
+        });
+    });
+};
+
+initialize();
 
 app.get("/hi", function (req, res) {
     db.getPool().query("SELECT * FROM users;", function (err, result) {
@@ -32,9 +47,4 @@ app.get("/hi", function (req, res) {
     })
 });
 
-app.get("/init", function (req, res) {
-    db.initialize(function (err, result) {
-        res.send("error msg: " + err + " result: " + result);
-    });
-});
 

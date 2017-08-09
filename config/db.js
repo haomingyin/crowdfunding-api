@@ -27,21 +27,21 @@ exports.getPool = function () {
 
 /**
  * Initialize database by reading sql DDL file and executing all the queries
- * @param cb callback function(error_msg, query_result)
+ * @param cb callback function(error_msg)
  */
 exports.initialize = function (cb) {
     fs.readFile(__dirname + "/init.sql", function (err, data) {
         if (err) {
             console.log(err);
-            cb(err, null);
+            cb(err);
         } else {
             exports.getPool().query(data.toString(), function (err2, result) {
                 if (err2) {
                     console.log(err2);
-                    cb(err2, null);
+                    cb(err2);
                 } else {
                     console.log(result);
-                    cb(null, result);
+                    cb(null);
                 }
             });
         }
