@@ -11,7 +11,7 @@ const state = {
 
 exports.connect = function (cb) {
     state.pool = mysql.createPool({
-        host: 'mysql',
+        host: process.env.SENG365_MYSQL_HOST || 'localhost',
         port: 3306,
         user: 'root',
         password: 'secret',
@@ -27,26 +27,21 @@ exports.getPool = function () {
 
 exports.initialize = function (cb) {
 
-    exports.connect(function () {
-
-        let path = process.cwd();
-        fs.readFile(path + "/config/init.sql", function (err, data) {
-            if (err) {
-                return console.log(err);
-            }
-
-            console.log(data.toString());
-
-            exports.getPool().query(data.toString(), function (err, res) {
-                if (err) {
-                    return console.log(err);
+    fs.readFile(__dirname + "/init.sql", function (err, data) {
+        if (err) {
+            console.log(err);
+            cb(err, null);
+        } else {
+            exports.getPool().query(data.toString(), function (err2, result) {
+                if (err2) {
+                    console.log(err2);
+                    cb(err2, null);
                 } else {
-                    console.log(res);
-                    cb();
+                    console.log(result);
+                    cb(null, result);
                 }
             });
-        });
-
-    })
+        }
+    });
 
 };

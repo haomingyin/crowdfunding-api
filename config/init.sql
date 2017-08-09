@@ -11,3 +11,4 @@ ALTER TABLE pledges ADD CONSTRAINT pledges_rewards_id_fk FOREIGN KEY (reward) RE
 CREATE TABLE IF NOT EXISTS users ( id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(15) NOT NULL, password VARCHAR(30) NOT NULL, location VARCHAR(50) NULL, email VARCHAR(50) NULL, CONSTRAINT users_username_uindex UNIQUE (username) );
 ALTER TABLE pledges ADD CONSTRAINT pledges_users_id_fk FOREIGN KEY (user) REFERENCES users (id);
 ALTER TABLE projects ADD CONSTRAINT projects_users_id_fk FOREIGN KEY (creator) REFERENCES users (id);
+INSERT INTO users (username, password, location, email) VALUES ('haoming', '123', 'Christchurch', 'hyi25@uclive.ac.nz');
