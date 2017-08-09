@@ -25,8 +25,11 @@ exports.getPool = function () {
     return state.pool;
 };
 
+/**
+ * Initialize database by reading sql DDL file and executing all the queries
+ * @param cb callback function(error_msg, query_result)
+ */
 exports.initialize = function (cb) {
-
     fs.readFile(__dirname + "/init.sql", function (err, data) {
         if (err) {
             console.log(err);
@@ -43,5 +46,4 @@ exports.initialize = function (cb) {
             });
         }
     });
-
 };
