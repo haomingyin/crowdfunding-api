@@ -25,9 +25,6 @@ exports.getPool = function () {
     return state.pool;
 };
 
-let status = {isReady: false, result: {}};
-exports.status = status;
-
 exports.initialize = function (cb) {
 
     exports.connect(function () {
@@ -36,13 +33,13 @@ exports.initialize = function (cb) {
                 return console.log(err);
             }
 
-            exports.getPool().query(data, function (err, res) {
+            console.log(data.toString());
+
+            exports.getPool().query(data.toString(), function (err, res) {
                 if (err) {
                     return console.log(err);
                 } else {
-                    status.isReady = true;
-                    status.result = res;
-
+                    console.log(res);
                     cb();
                 }
             });

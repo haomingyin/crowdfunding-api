@@ -30,11 +30,11 @@ db.initialize(function (err) {
 });
 
 app.get("/hi", function (req, res) {
-    db.getPool().query("SELECT COUNT(*) AS all FROM USERS;", function (err, result) {
+    db.getPool().query("SELECT COUNT(*) FROM USERS;", function (err, result) {
         if (err) {
-            res.send("Cannot connect to mysql.");
+            res.send(err);
         } else {
-            res.send("mysql has " + result.all + "items in USERS table. ");
+            res.send(result);
         }
     })
     // res.send("HELLO, SENG365_MYSQL_HOST: " + process.env.SENG365_MYSQL_HOST + " SENG365_MYSQL_PORT: " + process.env.SENG365_MYSQL_PORT + "\n");
