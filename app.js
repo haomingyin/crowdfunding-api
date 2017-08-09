@@ -30,7 +30,7 @@ db.initialize(function (err) {
 });
 
 app.get("/hi", function (req, res) {
-    db.getPool().query("SELECT COUNT(*) FROM USERS;", function (err, result) {
+    db.getPool().query("SELECT COUNT(*) FROM users;", function (err, result) {
         if (err) {
             res.send(err);
         } else {
