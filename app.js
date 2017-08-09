@@ -21,7 +21,8 @@ const PORT = 4941;
 // });
 
 app.get("/hi", function (req, res) {
-    res.send("Hello world");
+    res.send("HELLO, SENG365_PORT: " + process.env.SENG365_PORT + " SENG365_MYSQL_HOST: " + process.env.SENG365_MYSQL_HOST + " SENG365_MYSQL_PORT: " + process.env.SENG365_MYSQL_PORT +
+        " MYSQL_ROOT_PASSWORD: " + process.env.MYSQL_ROOT_PASSWORD + "\n");
     res.end("That's it!");
 });
 
