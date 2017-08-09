@@ -31,7 +31,7 @@ exports.status = status;
 exports.initialize = function (cb) {
 
     exports.connect(function () {
-        fs.readFile("./init.sql", "utf8", function (err, data) {
+        fs.readFile("config/init.sql", function (err, data) {
             if (err) {
                 return console.log(err);
             }
