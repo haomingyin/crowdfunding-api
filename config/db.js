@@ -11,8 +11,8 @@ const state = {
 
 exports.connect = function (cb) {
     state.pool = mysql.createPool({
-        host: 'csse-s365.canterbury.ac.nz',
-        port: 6612,
+        host: 'mysql',
+        port: 3306,
         user: 'root',
         password: 'secret',
         database: 'mysql',
@@ -28,6 +28,7 @@ exports.getPool = function () {
 exports.initialize = function (cb) {
 
     exports.connect(function () {
+
         let path = process.cwd();
         fs.readFile(path + "/config/init.sql", function (err, data) {
             if (err) {
@@ -45,6 +46,7 @@ exports.initialize = function (cb) {
                 }
             });
         });
+
     })
 
 };

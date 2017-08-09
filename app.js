@@ -21,16 +21,18 @@ setTimeout(function () {
     });
 }, 5000);
 
-
-// db.initialize(function (err) {
-//     if (err) {
-//         console.log("Unable to initialize MySQL.");
-//     } else {
-//         app.listen(PORT, function () {
-//             console.log('Listening on port: ' + PORT);
-//         })
-//     }
-// });
+// set a time out to wait for mysql to be initialized
+// setTimeout(function () {
+//     db.initialize(function (err) {
+//         if (err) {
+//             console.log("Unable to initialize MySQL.");
+//         } else {
+//             app.listen(PORT, function () {
+//                 console.log('Listening on port: ' + PORT);
+//             });
+//         }
+//     });
+// }, 5000);
 
 app.get("/hi", function (req, res) {
     db.getPool().query("SELECT COUNT(*) FROM user;", function (err, result) {
