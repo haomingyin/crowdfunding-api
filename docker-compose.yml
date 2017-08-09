@@ -1,10 +1,17 @@
-version: "2"
+version: "3"
 services:
   app:
     build: .
     ports:
-      - "4941:4941"
+      - "4879:4879"
+    environment:
+      - SENG365_MYSQL_HOST=mysql
+      - SENG365_MYSQL_PORT=3306
+    depends_on:
+      - mysql
   mysql:
     image: "mysql:5.7"
     environment:
       - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "6098:3306"
