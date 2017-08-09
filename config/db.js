@@ -11,8 +11,8 @@ const state = {
 
 exports.connect = function (cb) {
     state.pool = mysql.createPool({
-        host: process.env.SENG365_MYSQL_HOST || 'localhost',
-        port: process.env.SENG365_MYSQL_PORT || 3306,
+        host: 'localhost',
+        port: 3306,
         user: 'root',
         password: 'secret',
         database: 'mysql',

@@ -9,9 +9,22 @@ const app = express();
 const PORT = 4941;
 
 // connect to MySQL on start
-// db.connect(function (err) {
+setTimeout(function () {
+    db.connect(function (err) {
+        if (err) {
+            console.log("Unable to connect to MySQL.");
+        } else {
+            app.listen(PORT, function () {
+                console.log('Listening on port: ' + PORT);
+            })
+        }
+    });
+}, 5000);
+
+
+// db.initialize(function (err) {
 //     if (err) {
-//         console.log("Unable to connect to MySQL.");
+//         console.log("Unable to initialize MySQL.");
 //     } else {
 //         app.listen(PORT, function () {
 //             console.log('Listening on port: ' + PORT);
@@ -19,18 +32,8 @@ const PORT = 4941;
 //     }
 // });
 
-db.initialize(function (err) {
-    if (err) {
-        console.log("Unable to initialize MySQL.");
-    } else {
-        app.listen(PORT, function () {
-            console.log('Listening on port: ' + PORT);
-        })
-    }
-});
-
 app.get("/hi", function (req, res) {
-    db.getPool().query("SELECT COUNT(*) FROM users;", function (err, result) {
+    db.getPool().query("SELECT COUNT(*) FROM user;", function (err, result) {
         if (err) {
             res.send(err);
         } else {
