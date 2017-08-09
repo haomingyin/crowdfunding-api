@@ -11,8 +11,8 @@ const state = {
 
 exports.connect = function (cb) {
     state.pool = mysql.createPool({
-        host: 'localhost',
-        port: 3306,
+        host: 'csse-s365.canterbury.ac.nz',
+        port: 6612,
         user: 'root',
         password: 'secret',
         database: 'mysql',
