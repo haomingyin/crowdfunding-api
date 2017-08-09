@@ -28,7 +28,8 @@ exports.getPool = function () {
 exports.initialize = function (cb) {
 
     exports.connect(function () {
-        fs.readFile("config/init.sql", function (err, data) {
+        let path = process.cwd();
+        fs.readFile(path + "/config/init.sql", function (err, data) {
             if (err) {
                 return console.log(err);
             }
