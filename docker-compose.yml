@@ -8,8 +8,10 @@ services:
       - SENG365_MYSQL_HOST=db
       - SENG365_MYSQL_PORT=3306
     depends_on:
-      - db
-  db:
+      - mysql
+    links:
+      - mysql:db
+  mysql:
     image: "mysql:5.7"
     environment:
       - MYSQL_ROOT_PASSWORD=secret
