@@ -27,7 +27,7 @@ let initialize = function () {
         db.initialize(function (err) {
             // if fail to initialize db, wait for 2 second then redo it.
             if (err) {
-                setTimeout(initialize, 2000);
+                setTimeout(initialize, 500);
             } else {
                 listen();
             }
