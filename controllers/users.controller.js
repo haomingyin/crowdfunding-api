@@ -13,9 +13,9 @@ exports.create = function (req, res) {
     let b = req.body;
     let invalid = false;
     if (typeof b.user !== 'undefined') {
-        invalid = typeof b.user.username === 'undefined';
-        invalid = typeof b.user.location === 'undefined' || invalid;
-        invalid = typeof b.user.email === 'undefined' || invalid;
+        invalid = /^[a-zA-Z0-9_]{5, 30}$/.test(b.user.username);
+        invalid = /^[a-zA-Z0-9 ]{5, 100}$/.test(b.user.location) || invalid;
+        invalid = /\S+@\S+\.\S+/.test(b.user.email) || invalid;
         invalid = typeof b.password === 'undefined' || invalid;
     } else {
         invalid = true;
@@ -53,19 +53,15 @@ exports.logout = function (req, res) {
  * Get user by user id
  */
 exports.get = function (req, res) {
+    // user id can only be integer
     if (/^[0-9]+$/.test(req.params.id)) {
         req.status(400).send("Invalid id supplied");
     } else {
         users.getUserById(req.params.id, function (err, rows) {
-            if (err || rows === null) {
+            if (err || rows.length > 0) {
                 req.status(404).send("User not found");
             } else {
-                let result = {};
-                result.id = rows[0].id;
-                result.username = rows[0].username;
-                result.location = rows[0].location;
-                result.email = rows[0].email;
-                req.json(result);
+                req.json(rows[0]);
                 req.status(200);
             }
         });

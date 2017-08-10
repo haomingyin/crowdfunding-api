@@ -30,7 +30,7 @@ exports.login = function (param, cb) {
  * @param cb
  */
 exports.getUserById = function (id, cb) {
-    let sql = "SELECT * FROM users WHERE id=?";
+    let sql = "SELECT id, username, location, email FROM users WHERE id=?";
     db.getPool().query(sql, [id], function (err, result) {
         cb(err, result);
     });
