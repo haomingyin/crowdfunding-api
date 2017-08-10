@@ -18,7 +18,7 @@ exports.addUser = function (param, cb) {
  * @param cb
  */
 exports.login = function (param, cb) {
-    const sql = "SELECT * FROM users WHERE username=? AND password=?";
+    const sql = "SELECT id, username, location, email FROM users WHERE username=? AND password=?";
     db.getPool().query(sql, param, function (err, result) {
         cb(err, result);
     });
@@ -32,6 +32,12 @@ exports.login = function (param, cb) {
 exports.getUserById = function (id, cb) {
     let sql = "SELECT id, username, location, email FROM users WHERE id=?";
     db.getPool().query(sql, [id], function (err, result) {
+        cb(err, result);
+    });
+};
+
+exports.getAllUsers = function (cb) {
+    db.getPool().query("SELECT * FROM users;", function (err, result) {
         cb(err, result);
     });
 };

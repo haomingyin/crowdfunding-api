@@ -35,21 +35,11 @@ let initialize = function () {
     });
 };
 
-setTimeout(function () {
-    db.connect();
-}, 5000);
-
-listen();
-
-app.get("/hi", function (req, res) {
-
-    db.getPool().query("SELECT * FROM user;", function (err, result) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.send(result);
-        }
-    })
-});
-
-
+// if run locally, then only connect to database.
+if (process.env.SENG365_DOCKER_FLAG) {
+    initialize();
+} else {
+    db.connect(function () {
+    });
+    db.initialize(listen);
+}

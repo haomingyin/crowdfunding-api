@@ -34,7 +34,8 @@ exports = module.exports = function (app) {
 
     // routes for users
     app.route("/users")
-        .post(users.create);
+        .post(users.create)
+        .get(users.getAll);
 
     app.route("/users/login")
         .post(users.login);
