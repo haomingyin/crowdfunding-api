@@ -53,7 +53,23 @@ exports.logout = function (req, res) {
  * Get user by user id
  */
 exports.get = function (req, res) {
-    return null;
+    if (/^[0-9]+$/.test(req.params.id)) {
+        req.status(400).send("Invalid id supplied");
+    } else {
+        users.getUserById(req.params.id, function (err, rows) {
+            if (err || rows === null) {
+                req.status(404).send("User not found");
+            } else {
+                let result = {};
+                result.id = rows[0].id;
+                result.username = rows[0].username;
+                result.location = rows[0].location;
+                result.email = rows[0].email;
+                req.json(result);
+                req.status(200);
+            }
+        });
+    }
 };
 
 /**

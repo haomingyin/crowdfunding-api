@@ -23,3 +23,15 @@ exports.login = function (param, cb) {
         cb(err, result);
     });
 };
+
+/**
+ * Fetch a user by the given id
+ * @param id
+ * @param cb
+ */
+exports.getUserById = function (id, cb) {
+    let sql = "SELECT * FROM users WHERE id=?";
+    db.getPool().query(sql, [id], function (err, result) {
+        cb(err, result);
+    });
+};

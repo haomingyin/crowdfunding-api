@@ -35,10 +35,15 @@ let initialize = function () {
     });
 };
 
-initialize();
+setTimeout(function () {
+    db.connect();
+}, 5000);
+
+listen();
 
 app.get("/hi", function (req, res) {
-    db.getPool().query("SELECT * FROM users;", function (err, result) {
+
+    db.getPool().query("SELECT * FROM user;", function (err, result) {
         if (err) {
             res.send(err);
         } else {
