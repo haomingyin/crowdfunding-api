@@ -7,44 +7,38 @@
 
 const projects = require("../controllers/projects.controller");
 const rewards = require("../controllers/rewards.controller");
-const users = require('../controllers/users.controller');
+const users = require("../controllers/users.controller");
+
+const middleware = require("./middleware");
 
 exports = module.exports = function (app) {
 
     // routes for projects
-    app.route("/projects")
-        .get(projects.listAll)
-        .post(projects.create);
+    app.get("/projects", projects.listAll);
+    app.post("/projects", middleware.validateToken, projects.create);
 
-    app.route("/projects/:id")
-        .get(projects.get)
-        .put(projects.update);
+    app.get("/projects/:id", projects.get);
+    app.put("/projects/:id", middleware.validateToken, middleware.validateProjectOwner, projects.update);
 
-    app.route("/projects/:id/image")
-        .get(projects.getImage)
-        .put(projects.updateImage);
+    app.get("/projects/:id/image", projects.getImage);
+    app.put("/projects/:id/image", middleware.validateToken, middleware.validateProjectOwner, projects.updateImage);
 
-    app.route("/projects/:id/pledge")
-        .post(projects.pledge);
+    app.post("/projects/:id/pledge", middleware.validateToken, middleware.validateNotOwner, projects.pledge);
 
     // routes for rewards
-    app.route("/projects/:id/rewards")
-        .get(rewards.get)
-        .put(rewards.update);
+    app.get("/projects/:id/rewards", rewards.get);
+    app.put("/projects/:id/rewards", middleware.validateToken, middleware.validateProjectOwner, rewards.update);
 
     // routes for users
     app.route("/users")
         .post(users.create)
         .get(users.getAll);
 
-    app.route("/users/login")
-        .post(users.login);
+    app.post("/users/login", users.login);
 
-    app.route("/users/logout")
-        .post(users.logout);
+    app.post("/users/logout", middleware.validateToken, users.logout);
 
-    app.route("/users/:id")
-        .get(users.get)
-        .put(users.update)
-        .delete(users.delete);
+    app.delete("/users/:id", middleware.validateToken, middleware.validateQueryID, users.delete);
+    app.put("/users/:id", middleware.validateToken, middleware.validateQueryID, users.update);
+    app.get("/users/:id", middleware.validateToken, users.get);
 };

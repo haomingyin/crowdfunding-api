@@ -8,6 +8,7 @@
 const users = require("../models/users.model");
 const jwt = require("../config/jsonwebtoken");
 const db = require("../config/db");
+
 /**
  * Create a new user
  */
@@ -28,7 +29,7 @@ exports.create = function (req, res) {
     } else {
         users.addUser([b.user.username, b.password, b.user.location, b.user.email], function (err, result) {
             if (err) {
-                res.status(400).send("Unable to create a user based on given information\n" + err + result);
+                res.status(400).send("Unable to create a user based on given information\n" + err);
             } else {
                 res.status(202).send(`${result.insertId}`);
             }
@@ -55,7 +56,8 @@ exports.login = function (req, res) {
  * Logout a current logged in user session
  */
 exports.logout = function (req, res) {
-    return null;
+    jwt.invoke(req.get('X-Authorization'));
+    res.status(200).send("OK");
 };
 
 /**
@@ -80,14 +82,32 @@ exports.get = function (req, res) {
  * Update user's information
  */
 exports.update = function (req, res) {
-    return null;
+    let b = req.body;
+    users.update([b.user.username, b.password, b.user.location, b.user.email, req.params.id], function (err, result) {
+        if (err) {
+            res.status(400).send("Failed to update\n" + err + "\n");
+        } else if (result.affectedRows === 0) {
+            res.status(404).send("User not found\n");
+        } else {
+            res.status(200).send("Updated user\n");
+        }
+
+    });
 };
 
 /**
  * Delete a user
  */
 exports.delete = function (req, res) {
-    return null;
+    users.delete(req.params.id, function (err, result) {
+        if (err) {
+            res.status(403).send("The user has been associates with projects, pledges or rewards\n" + err + "\n");
+        } else if (result.affectedRows === 0) {
+            res.status(404).send("User not found\n");
+        } else {
+            res.status(200).send("User deleted\n");
+        }
+    });
 };
 
 //TODO: should be removed!
@@ -102,5 +122,4 @@ exports.getAll = function (req, res) {
             res.send(rows);
         }
     });
-
 };
