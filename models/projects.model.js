@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const rewards = require("./rewards.model");
 
 /**
  * Query all columns from creates table with given creator id and project id
@@ -71,6 +72,12 @@ exports.create = function (project, cb) {
     });
 };
 
+/**
+ * Get blobs for all open project
+ * @param offset
+ * @param limit
+ * @param cb
+ */
 exports.getAll = function (offset, limit, cb) {
     let sql;
     if (offset && limit) {
@@ -88,9 +95,91 @@ exports.getAll = function (offset, limit, cb) {
     }
 };
 
+/**
+ * Toggles project status, either open / closed
+ * @param params
+ * @param cb
+ */
 exports.toggle = function (params, cb) {
     let sql = "UPDATE projects SET open=? WHERE id=?";
     db.getPool().query(sql, params, function (err, result) {
         cb(err, result);
     });
 };
+
+function fetchProjectDetail(projectId, cb) {
+    db.getPool().query("SELECT * FROM project_detail WHERE id=?", [projectId], function (err, rows) {
+        cb(err, rows);
+    });
+}
+
+function fetchCreators(projectId, cb) {
+    db.getPool().query("SELECT creator AS id, name FROM creates WHERE project=?", [projectId], function (err, rows) {
+        cb(err, rows);
+    });
+}
+
+function fetchBackers(projectId, cb) {
+    // TODO: for now only fetches non-anonymous backers
+    db.getPool().query("SELECT pl.amount, u.username AS name FROM pledges AS pl LEFT JOIN users AS u ON pl.user = u.id " +
+        "WHERE pl.project=? AND pl.anonymous='false'", [projectId], function (err, rows) {
+        cb(err, rows);
+    });
+}
+
+function formatProjectDetail(project, creators, rewards, backers) {
+    try {
+        return {
+            project: {
+                id: project.id,
+                creationDate: project.timestamp,
+                data: {
+                    title: project.title,
+                    subtitle: project.subtitle,
+                    description: project.description,
+                    imageUri: project.imageUri,
+                    target: project.target,
+                    "creators": creators,
+                    "rewards": rewards,
+                }
+            },
+            progress: {
+                target: project.target,
+                currentPledged: project.currentPledged || 0,
+                numberOfBackers: project.numberOfBackers || 0
+            },
+            "backers": backers
+        };
+
+    } catch (err) {
+        return {};
+    }
+}
+
+/**
+ * Get projects details
+ * @param projectId
+ * @param cb
+ */
+exports.getProjectDetail = function (projectId, cb) {
+    fetchProjectDetail(projectId, function (err1, projectDetail) {
+        if (err1) return cb(err1, null);
+        if (projectDetail.length === 0) return cb(null, {});
+
+        fetchCreators(projectId, function (err2, creators) {
+            if (err2) return cb(err2, null);
+
+            rewards.getByProjectID(projectId, function (err3, rewards) {
+                if (err3) return cb(err3, null);
+
+                fetchBackers(projectId, function (err4, backers) {
+                    if (err4) return cb(err4, null);
+
+                    cb(null, formatProjectDetail(projectDetail[0], creators, rewards, backers));
+                });
+            })
+        });
+
+    });
+};
+

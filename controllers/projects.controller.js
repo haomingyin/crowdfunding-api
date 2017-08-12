@@ -48,7 +48,14 @@ exports.create = function (req, res) {
  * View project details
  */
 exports.get = function (req, res) {
-    return null;
+    projects.getProjectDetail(req.params.id, function (err, projectDetail) {
+        if (err) {
+            res.status(500).send("Failed to fetch project details\nError details: " + err);
+        } else {
+            res.set('Content-Type', 'application/json');
+            res.status(200).send(projectDetail);
+        }
+    });
 };
 
 /**
