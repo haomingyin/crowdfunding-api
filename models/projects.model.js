@@ -183,3 +183,14 @@ exports.getProjectDetail = function (projectId, cb) {
     });
 };
 
+/**
+ * For current user, pledge the given amount of money for a specific project
+ * @param params [userId, projectId, reward, amount, anonymous]
+ * @param cb
+ */
+exports.pledge = function (params, cb) {
+    let sql = "INSERT INTO pledges (user, project, reward, amount, anonymous) VALUES (?, ?, ?, ?, ?);";
+    db.getPool().query(sql, params, function (err, result) {
+        cb(err, result);
+    })
+};

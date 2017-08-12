@@ -89,5 +89,16 @@ exports.updateImage = function (req, res) {
  * Pledge an amount to a project
  */
 exports.pledge = function (req, res) {
-    return null;
+    let b = req.body;
+    if (b.id != req.user.id) {
+        res.status(400).send("The pledge's user ID does not agree with current session credential(token)\n");
+    } else {
+        projects.pledge([b.id, req.params.id, null, b.amount, String(b.anonymous)], function (err, result) {
+            if (err || result.affectedRows === 0) {
+                res.status(400).send("Bad user, project, or pledge details\nError details: " + err);
+            } else {
+                res.status(200).send("OK");
+            }
+        });
+    }
 };
