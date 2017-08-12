@@ -46,7 +46,7 @@ console.log(typeof b.user === 'undefined');
 //     });
 // }
 
-const schema = require("./projects.schema.json");
+const schema = require("./schemas/projects.schema.json");
 
 const userInfo = {
     "title": "string",

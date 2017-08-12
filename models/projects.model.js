@@ -19,25 +19,25 @@ exports.getProjectOwner = function (params, cb) {
  */
 function getCreateProjectSQL(project) {
     let sql = "START TRANSACTION; ";
-    sql += "SET AUTOCOMMIT = FALSE; ";
 
     sql += "INSERT INTO projects (title, subtitle, description, imageUri, target) VALUES (?, ?, ?, ?, ?); ";
     let params = [project.title, project.subtitle, project.description, project.imageUri, project.target];
 
-    sql += "SET @project = LAST_INSERT_ID(); ";
+    sql += "SET @projectId = LAST_INSERT_ID(); ";
 
     for (let i = 0; i < project.creators.length; i++) {
-        sql += "INSERT INTO creates (creator, project) VALUES (?, @project); ";
+        sql += "INSERT INTO creates (creator, name, project) VALUES (?, ?, @projectId); ";
         params.push(project.creators[i].id);
+        params.push(project.creators[i].name);
     }
 
     for (let i = 0; i < project.rewards.length; i++) {
-        sql += "INSERT INTO rewards (project, amount, description) VALUES (@project, ?, ?); ";
+        sql += "INSERT INTO rewards (project, amount, description) VALUES (@projectId, ?, ?); ";
         params.push(project.rewards[i].amount);
         params.push(project.rewards[i].description);
     }
 
-    sql += "SELECT @project AS project; ";
+    sql += "SELECT @projectId AS projectId; ";
     sql += "COMMIT;";
 
     return {"sql": sql, "params": params};
@@ -74,9 +74,9 @@ exports.create = function (project, cb) {
 exports.getAll = function (offset, limit, cb) {
     let sql;
     if (offset && limit) {
-        sql = "SELECT * FROM projects WHERE open=1 LIMIT ?,?;";
+        sql = "SELECT id, title, subtitle, imageUri FROM projects WHERE open!='false' LIMIT ?,?;";
     } else {
-        sql = "SELECT * FROM projects WHERE open=1;";
+        sql = "SELECT id, title, subtitle, imageUri FROM projects open!='false';";
     }
 
     try {
@@ -86,4 +86,11 @@ exports.getAll = function (offset, limit, cb) {
     } catch (err) {
         cb(err, null);
     }
+};
+
+exports.toggle = function (params, cb) {
+    let sql = "UPDATE projects SET open=? WHERE id=?";
+    db.getPool().query(sql, params, function (err, result) {
+        cb(err, result);
+    });
 };

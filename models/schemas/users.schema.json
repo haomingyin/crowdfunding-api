@@ -13,13 +13,13 @@
                 },
                 "username": {
                     "type": "string",
-                    "minLength": 5,
+                    "minLength": 1,
                     "maxLength": 15,
                     "required": true
                 },
                 "location": {
                     "type": "string",
-                    "minLength": 5,
+                    "minLength": 1,
                     "maxLength": 50,
                     "required": true
                 },
@@ -33,7 +33,7 @@
         },
         "password": {
             "type": "string",
-            "minLength": 5,
+            "minLength": 1,
             "maxLength": 30,
             "required": true
         }

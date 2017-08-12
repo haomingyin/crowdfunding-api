@@ -27,7 +27,7 @@ exports = module.exports = function (app) {
 
     // routes for rewards
     app.get("/projects/:id/rewards", rewards.get);
-    app.put("/projects/:id/rewards", mw.validateToken, mw.validateProjectOwner, rewards.update);
+    app.put("/projects/:id/rewards", mw.validateToken, mw.validateProjectOwner, mw.validateRewardJSON, rewards.update);
 
     // routes for users
     app.post("/users", mw.validateUserJSON, users.create);

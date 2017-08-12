@@ -15,7 +15,8 @@ exports.listAll = function (req, res) {
         if (err) {
             res.status(500).send("Failed to fetch projects\nError details: " + err);
         } else {
-            res.status(200).send(JSON.stringify(rows));
+            res.set('Content-Type', 'application/json');
+            res.status(200).send(rows);
         }
     })
 
@@ -29,7 +30,16 @@ exports.create = function (req, res) {
         if (err || rows.length === 0) {
             res.status(400).send("Malformed project data\nError details: " + err);
         } else {
-            res.status(201).send(JSON.stringify(rows) + err);
+            let projectId;
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].constructor === Array) {
+                    if (rows[i][0].projectId) {
+                        projectId = rows[i][0].projectId;
+                        break;
+                    }
+                }
+            }
+            res.status(201).send(`${projectId}`);
         }
     });
 };
@@ -45,7 +55,13 @@ exports.get = function (req, res) {
  * Update project (open/close)
  */
 exports.update = function (req, res) {
-    return null;
+    projects.toggle([String(req.body.open), req.params.id], function (err, result) {
+        if (err) {
+            res.status(400).send("Malformed project data\nError details: " + err);
+        } else {
+            res.status(201).send("OK");
+        }
+    });
 };
 
 /**

@@ -2,8 +2,9 @@ const jwt = require("../config/jsonwebtoken");
 const projects = require("../models/projects.model");
 const validator = require("is-my-json-valid");
 
-const userSchema = require("../models/users.schema.json");
-const projectSchema = require("../models/projects.schema.json");
+const userSchema = require("../models/schemas/users.schema.json");
+const projectSchema = require("../models/schemas/projects.schema.json");
+const rewardSchema = require("../models/schemas/rewards.schema.json");
 
 /**
  * Middleware checks the token is valid.
@@ -114,5 +115,18 @@ exports.validateProjectJSON = function (req, res, next) {
         }
     } catch (err) {
         res.status(400).send("Malformed project data\nError details:" + err);
+    }
+};
+
+exports.validateRewardJSON = function (req, res, next) {
+    try {
+        let validate = validator(rewardSchema, {verbose: true});
+        if (validate(req.body)) {
+            next();
+        } else {
+            res.status(400).send("Malformed rewards data\nError details:" + JSON.stringify(validate.errors));
+        }
+    } catch (err) {
+        res.status(400).send("Malformed rewards data\nError details:" + err);
     }
 };

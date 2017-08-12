@@ -16,6 +16,7 @@ exports.create = function (req, res) {
     let b = req.body;
     users.addUser([b.user.username, b.password, b.user.location, b.user.email], function (err, result) {
         if (err) {
+            res.set('Content-Type', 'application/json');
             res.status(400).send("Malformed user data\nError details: " + err);
         } else {
             res.status(202).send(`${result.insertId}`);
@@ -32,7 +33,8 @@ exports.login = function (req, res) {
             res.status(400).send("Invalid username/password supplied\n")
         } else {
             let token = jwt.sign(rows[0]);
-            res.status(200).send(JSON.stringify({"id": rows[0].id, "token": token}));
+            res.set('Content-Type', 'application/json');
+            res.status(200).send({"id": rows[0].id, "token": token});
         }
     });
 };
@@ -57,7 +59,8 @@ exports.get = function (req, res) {
             if (err || rows.length !== 1) {
                 res.status(404).send("User not found\n");
             } else {
-                res.status(200).send(JSON.stringify(rows[0]));
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(rows[0]);
             }
         });
     }
@@ -70,6 +73,7 @@ exports.update = function (req, res) {
     let b = req.body;
     users.update([b.user.username, b.password, b.user.location, b.user.email, req.params.id], function (err, result) {
         if (err) {
+            res.set('Content-Type', 'application/json');
             res.status(400).send("Failed to update\nError details: " + err + "\n");
         } else if (result.affectedRows === 0) {
             res.status(404).send("User not found\n");
@@ -86,6 +90,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
     users.delete(req.params.id, function (err, result) {
         if (err) {
+            res.set('Content-Type', 'application/json');
             res.status(403).send("The user has been associates with projects, pledges or rewards\nError details: " + err + "\n");
         } else if (result.affectedRows === 0) {
             res.status(404).send("User not found\n");
@@ -100,6 +105,7 @@ exports.delete = function (req, res) {
  * Get all users -- just for test
  */
 exports.getAll = function (req, res) {
+    res.set('Content-Type', 'application/json');
     users.getAllUsers(function (err, rows) {
         if (err) {
             res.send(err);
