@@ -1,0 +1,78 @@
+{
+    "type": "object",
+    "required": true,
+    "additionalItems": false,
+    "properties": {
+        "title": {
+            "type": "string",
+            "required": true,
+            "minLength": 5
+        },
+        "subtitle": {
+            "type": "string",
+            "required": true,
+            "minLength": 5
+        },
+        "description": {
+            "type": "string",
+            "required": true,
+            "minLength": 10
+        },
+        "imageUri": {
+            "type": "string",
+            "required": true
+        },
+        "target": {
+            "type": "number",
+            "minimum": 0
+        },
+        "creators": {
+            "type": "array",
+            "required": true,
+            "items": [
+                {
+                    "type": "object",
+                    "required": true,
+                    "additionalItems": false,
+                    "properties": {
+                        "id": {
+                            "type": "number",
+                            "required": true
+                        },
+                        "name": {
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                }
+            ]
+        },
+        "rewards": {
+            "type": "array",
+            "required": true,
+            "items": [
+                {
+                    "type": "object",
+                    "required": true,
+                    "additionalItems": false,
+                    "properties": {
+                        "id": {
+                            "type": "number",
+                            "required": true
+                        },
+                        "amount": {
+                            "type": "number",
+                            "required": true,
+                            "minimum": 0
+                        },
+                        "description": {
+                            "type": "string",
+                            "required": true,
+                            "minLength": 10
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

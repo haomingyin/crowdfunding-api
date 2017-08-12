@@ -16,7 +16,8 @@ exports.connect = function (cb) {
         user: 'root',
         password: 'secret',
         database: 'mysql',
-        multipleStatements: true
+        multipleStatements: true,
+        connectionLimit: 100
     });
     cb();
 };

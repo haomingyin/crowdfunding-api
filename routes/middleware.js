@@ -1,5 +1,9 @@
 const jwt = require("../config/jsonwebtoken");
 const projects = require("../models/projects.model");
+const validator = require("is-my-json-valid");
+
+const userSchema = require("../models/users.schema.json");
+const projectSchema = require("../models/projects.schema.json");
 
 /**
  * Middleware checks the token is valid.
@@ -24,11 +28,11 @@ exports.validateToken = function (req, res, next) {
  * @param next
  */
 exports.validateProjectOwner = function (req, res, next) {
-    projects.getProjectOwner(req.params.id, function (err, rows) {
-        if (err || rows.length === 0) {
+    projects.getProjectOwner([req.user.id, req.params.id], function (err, rows) {
+        if (err) {
             res.status(400).send("Invalid project ID\n");
         } else {
-            if (rows[0].creator === req.user.id) {
+            if (rows.length !== 0) {
                 next();
             } else {
                 res.status(403).send("Forbidden to access a project that you do not own\n");
@@ -44,11 +48,11 @@ exports.validateProjectOwner = function (req, res, next) {
  * @param next
  */
 exports.validateNotOwner = function (req, res, next) {
-    projects.getProjectOwner(req.params.id, function (err, rows) {
-        if (err || rows.length === 0) {
+    projects.getProjectOwner([req.user.id, req.params.id], function (err, rows) {
+        if (err) {
             res.status(400).send("Invalid project ID supplied\n");
         } else {
-            if (rows[0].creator !== req.user.id) {
+            if (rows.length === 0) {
                 next();
             } else {
                 res.status(403).send("Forbidden to access your own project\n");
@@ -58,12 +62,12 @@ exports.validateNotOwner = function (req, res, next) {
 };
 
 /**
- * Middleware checked if the query ID is unify with decoded user ID
+ * Middleware checks if the query ID is unify with decoded user ID
  * @param req
  * @param res
  * @param next
  */
-exports.validateQueryID = function (req, res, next) {
+exports.validateQueryUserID = function (req, res, next) {
     try {
         if (req.user.id === Number(req.params.id)) {
             next();
@@ -72,5 +76,43 @@ exports.validateQueryID = function (req, res, next) {
         }
     } catch (err) {
         res.status(400).send("Invalid user ID supplied\n" + err + "\n");
+    }
+};
+
+/**
+ * Middleware checks if the incoming user JSON conforms to the preset user schema
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.validateUserJSON = function (req, res, next) {
+    try {
+        let validate = validator(userSchema, {verbose: true});
+        if (validate(req.body)) {
+            next();
+        } else {
+            res.status(400).send("Malformed user data\nError details: " + JSON.stringify(validate.errors));
+        }
+    } catch (err) {
+        res.status(400).send("Malformed user data\nError details: " + err);
+    }
+};
+
+/**
+ * Middleware checks if the incoming project JSON conforms to the preset project schema
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.validateProjectJSON = function (req, res, next) {
+    try {
+        let validate = validator(projectSchema, {verbose: true});
+        if (validate(req.body)) {
+            next();
+        } else {
+            res.status(400).send("Malformed project data\nError details:" + JSON.stringify(validate.errors));
+        }
+    } catch (err) {
+        res.status(400).send("Malformed project data\nError details:" + err);
     }
 };

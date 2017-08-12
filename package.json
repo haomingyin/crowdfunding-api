@@ -16,9 +16,11 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
+      "ajv": "^5.2.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "fast-memory-cache": "^2.0.4",
+      "is-my-json-valid": "^2.16.0",
     "jsonwebtoken": "^7.4.2",
     "lodash": "^4.17.4",
     "mysql": "^2.14.1"

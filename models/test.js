@@ -14,12 +14,12 @@ console.log(b);
 console.log(typeof b.user === 'undefined');
 
 
-const jwt = require("jsonwebtoken");
-console.log(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}));
-jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", function (err, decoded) {
-    console.log(err);
-    console.log(decoded);
-});
+// const jwt = require("jsonwebtoken");
+// console.log(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}));
+// jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", function (err, decoded) {
+//     console.log(err);
+//     console.log(decoded);
+// });
 
 // const Cache = require("fast-memory-cache");
 // let cache = new Cache();
@@ -36,12 +36,41 @@ jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", fu
 //     console.log(typeof data === 'undefined');
 // }, 4000);
 
-db.connect(del);
+// db.connect(del);
+//
+// function del() {
+//     let sql = "DELETE FROM users WHERE id=?;";
+//     db.getPool().query(sql, [2], function (err, result) {
+//         console.log(err);
+//         console.log(result);
+//     });
+// }
 
-function del() {
-    let sql = "DELETE FROM users WHERE id=?;";
-    db.getPool().query(sql, [2], function (err, result) {
-        console.log(err);
-        console.log(result);
-    });
-}
+const schema = require("./projects.schema.json");
+
+const userInfo = {
+    "title": "string",
+    "subtitle": "string",
+    "description": "string12334",
+    "imageUri": "imageUri",
+    "target": 0,
+    "creators": [
+        {
+            "id": 0,
+            "name": "string"
+        }
+    ],
+    "rewards": [
+        {
+            "id": 0,
+            "amount": 0,
+            "description": "string1234"
+        }
+    ]
+};
+
+let validator = require("is-my-json-valid");
+let validate = validator(schema, {verbose: true});
+
+let validation = validate(userInfo);
+console.log(`result: ${validation}\nerrors: ${JSON.stringify(validate.errors)}`);

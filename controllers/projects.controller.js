@@ -5,18 +5,33 @@
  * Date: 8/8/2017
  */
 
+const projects = require("../models/projects.model");
+
 /**
  * View all current projects
  */
 exports.listAll = function (req, res) {
-    return null;
+    projects.getAll(req.get("startIndex"), req.get("count"), function (err, rows) {
+        if (err) {
+            res.status(500).send("Failed to fetch projects\nError details: " + err);
+        } else {
+            res.status(200).send(JSON.stringify(rows));
+        }
+    })
+
 };
 
 /**
  * Create a new project
  */
 exports.create = function (req, res) {
-    return null;
+    projects.create(req.body, function (err, rows) {
+        if (err || rows.length === 0) {
+            res.status(400).send("Malformed project data\nError details: " + err);
+        } else {
+            res.status(201).send(JSON.stringify(rows) + err);
+        }
+    });
 };
 
 /**

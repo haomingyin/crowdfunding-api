@@ -36,10 +36,10 @@ let initialize = function () {
 };
 
 // if run locally, then only connect to database.
-if (process.env.SENG365_DOCKER_FLAG) {
+if (process.env.SENG365_DOCKER_FLAG && Number(process.env.SENG365_DOCKER_FLAG) === 1) {
     initialize();
 } else {
     db.connect(function () {
     });
-    db.initialize(listen);
+    listen();
 }

@@ -1,0 +1,41 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "user": {
+            "type": "object",
+            "required": true,
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "required": false
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 15,
+                    "required": true
+                },
+                "location": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 50,
+                    "required": true
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "maxLength": 50,
+                    "required": true
+                }
+            }
+        },
+        "password": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 30,
+            "required": true
+        }
+    }
+}

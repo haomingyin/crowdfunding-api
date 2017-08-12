@@ -7,7 +7,7 @@ services:
     environment:
       - SENG365_MYSQL_HOST=mysql
       - SENG365_MYSQL_PORT=3306
-      - SENG365_DOCKER_FLAG=true
+      - SENG365_DOCKER_FLAG=1
     depends_on:
       - mysql
   mysql:

@@ -14,28 +14,13 @@ const db = require("../config/db");
  */
 exports.create = function (req, res) {
     let b = req.body;
-    let valid = true;
-    if (typeof b.user !== 'undefined') {
-        valid = /^[a-zA-Z0-9_]{5,30}$/.test(b.user.username);
-        valid = /^[a-zA-Z0-9 ]{5,100}$/.test(b.user.location) && valid;
-        valid = /\S+@\S+\.\S+/.test(b.user.email) && valid;
-        valid = typeof b.password !== 'undefined' && valid;
-    } else {
-        valid = false;
-    }
-
-    if (!valid) {
-        res.status(400).send("Unable to create a user based on the given information\n");
-    } else {
-        users.addUser([b.user.username, b.password, b.user.location, b.user.email], function (err, result) {
-            if (err) {
-                res.status(400).send("Unable to create a user based on given information\n" + err);
-            } else {
-                res.status(202).send(`${result.insertId}`);
-            }
-        });
-    }
-
+    users.addUser([b.user.username, b.password, b.user.location, b.user.email], function (err, result) {
+        if (err) {
+            res.status(400).send("Malformed user data\nError details: " + err);
+        } else {
+            res.status(202).send(`${result.insertId}`);
+        }
+    });
 };
 
 /**
@@ -65,8 +50,8 @@ exports.logout = function (req, res) {
  */
 exports.get = function (req, res) {
     // user id can only be integer
-    if (/^[0-9]+$/.test(req.params.id)) {
-        req.status(400).send("Invalid id supplied\n");
+    if (!/^[0-9]+$/.test(req.params.id)) {
+        res.status(400).send("Invalid id supplied\n");
     } else {
         users.getUserById(req.params.id, function (err, rows) {
             if (err || rows.length !== 1) {
@@ -85,7 +70,7 @@ exports.update = function (req, res) {
     let b = req.body;
     users.update([b.user.username, b.password, b.user.location, b.user.email, req.params.id], function (err, result) {
         if (err) {
-            res.status(400).send("Failed to update\n" + err + "\n");
+            res.status(400).send("Failed to update\nError details: " + err + "\n");
         } else if (result.affectedRows === 0) {
             res.status(404).send("User not found\n");
         } else {
@@ -101,7 +86,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
     users.delete(req.params.id, function (err, result) {
         if (err) {
-            res.status(403).send("The user has been associates with projects, pledges or rewards\n" + err + "\n");
+            res.status(403).send("The user has been associates with projects, pledges or rewards\nError details: " + err + "\n");
         } else if (result.affectedRows === 0) {
             res.status(404).send("User not found\n");
         } else {
