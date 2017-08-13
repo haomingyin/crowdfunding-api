@@ -14,12 +14,12 @@ console.log(b);
 console.log(typeof b.user === 'undefined');
 
 
-// const jwt = require("jsonwebtoken");
-// console.log(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}));
-// jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", function (err, decoded) {
-//     console.log(err);
-//     console.log(decoded);
-// });
+const jwt = require("jsonwebtoken");
+console.log(jwt.sign({id: "fsdfsfsfd"}, "abc", {expiresIn: 30, algorithm: "none"}));
+jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", function (err, decoded) {
+    console.log(err);
+    console.log(decoded);
+});
 
 // const Cache = require("fast-memory-cache");
 // let cache = new Cache();
@@ -46,31 +46,31 @@ console.log(typeof b.user === 'undefined');
 //     });
 // }
 
-const schema = require("./schemas/projects.schema.json");
-
-const userInfo = {
-    "title": "string",
-    "subtitle": "string",
-    "description": "string12334",
-    "imageUri": "imageUri",
-    "target": 0,
-    "creators": [
-        {
-            "id": 0,
-            "name": "string"
-        }
-    ],
-    "rewards": [
-        {
-            "id": 0,
-            "amount": 0,
-            "description": "string1234"
-        }
-    ]
-};
-
-let validator = require("is-my-json-valid");
-let validate = validator(schema, {verbose: true});
-
-let validation = validate(userInfo);
-console.log(`result: ${validation}\nerrors: ${JSON.stringify(validate.errors)}`);
+// const schema = require("./schemas/projects.schema.json");
+//
+// const userInfo = {
+//     "title": "string",
+//     "subtitle": "string",
+//     "description": "string12334",
+//     "imageUri": "imageUri",
+//     "target": 0,
+//     "creators": [
+//         {
+//             "id": 0,
+//             "name": "string"
+//         }
+//     ],
+//     "rewards": [
+//         {
+//             "id": 0,
+//             "amount": 0,
+//             "description": "string1234"
+//         }
+//     ]
+// };
+//
+// let validator = require("is-my-json-valid");
+// let validate = validator(schema, {verbose: true});
+//
+// let validation = validate(userInfo);
+// console.log(`result: ${validation}\nerrors: ${JSON.stringify(validate.errors)}`);

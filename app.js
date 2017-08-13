@@ -29,14 +29,17 @@ let initialize = function () {
             if (err) {
                 setTimeout(initialize, 500);
             } else {
+                if (Number(process.env.SENG365_DOCKER_FLAG) === 0) {
+                    throw "Docker Flag is set to 0, terminate this instance so that it can run locally";
+                }
                 listen();
             }
         });
     });
 };
 
-// if run locally, then only connect to database.
-if (process.env.SENG365_DOCKER_FLAG && Number(process.env.SENG365_DOCKER_FLAG) === 1) {
+// if run on docker, then initialize database.
+if (process.env.SENG365_DOCKER_FLAG) {
     initialize();
 } else {
     db.connect(function () {

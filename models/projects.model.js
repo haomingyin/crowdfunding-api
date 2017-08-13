@@ -83,7 +83,7 @@ exports.getAll = function (offset, limit, cb) {
     if (offset && limit) {
         sql = "SELECT id, title, subtitle, imageUri FROM projects WHERE open!='false' LIMIT ?,?;";
     } else {
-        sql = "SELECT id, title, subtitle, imageUri FROM projects open!='false';";
+        sql = "SELECT id, title, subtitle, imageUri FROM projects WHERE open!='false';";
     }
 
     try {
