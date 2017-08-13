@@ -5,6 +5,7 @@ const validator = require("is-my-json-valid");
 const userSchema = require("../models/schemas/users.schema.json");
 const projectSchema = require("../models/schemas/projects.schema.json");
 const rewardSchema = require("../models/schemas/rewards.schema.json");
+const pledgeSchema = require("../models/schemas/pledges.shema.json");
 
 /**
  * Middleware checks the token is valid.
@@ -118,6 +119,12 @@ exports.validateProjectJSON = function (req, res, next) {
     }
 };
 
+/**
+ * Middleware checks if the incoming updating reward request has valid reward json
+ * @param req
+ * @param res
+ * @param next
+ */
 exports.validateRewardJSON = function (req, res, next) {
     try {
         let validate = validator(rewardSchema, {verbose: true});
@@ -128,5 +135,24 @@ exports.validateRewardJSON = function (req, res, next) {
         }
     } catch (err) {
         res.status(400).send("Malformed rewards data\nError details:" + err);
+    }
+};
+
+/**
+ * Middleware checks if the incoming pledge request has valid pledge json
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.validatePledgeJSON = function (req, res, next) {
+    try {
+        let validate = validator(pledgeSchema, {verbose: true});
+        if (validate(req.body)) {
+            next();
+        } else {
+            res.status(400).send("Malformed pledge data\nError details:" + JSON.stringify(validate.errors));
+        }
+    } catch (err) {
+        res.status(400).send("Malformed pledge data\nError details:" + err);
     }
 };

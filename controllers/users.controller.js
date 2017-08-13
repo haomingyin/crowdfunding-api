@@ -16,7 +16,6 @@ exports.create = function (req, res) {
     let b = req.body;
     users.addUser([b.user.username, b.password, b.user.location, b.user.email], function (err, result) {
         if (err) {
-            res.set('Content-Type', 'application/json');
             res.status(400).send("Malformed user data\nError details: " + err);
         } else {
             res.status(202).send(`${result.insertId}`);
@@ -90,7 +89,6 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
     users.delete(req.params.id, function (err, result) {
         if (err) {
-            res.set('Content-Type', 'application/json');
             res.status(403).send("The user has been associates with projects, pledges or rewards\nError details: " + err + "\n");
         } else if (result.affectedRows === 0) {
             res.status(404).send("User not found\n");

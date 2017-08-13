@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "id": {
+            "type": "number",
+            "minimum": 0,
+            "required": true
+        },
+        "amount": {
+            "type": "number",
+            "minimum": 0,
+            "required": true
+        },
+        "anonymous": {
+            "type": "boolean",
+            "required": true
+        },
+        "card": {
+            "type": "object",
+            "required": true,
+            "additionalProperties": false,
+            "properties": {
+                "authToken": {
+                    "type": "string",
+                    "require": true
+                }
+            }
+        }
+    }
+}

@@ -121,8 +121,10 @@ function fetchCreators(projectId, cb) {
 
 function fetchBackers(projectId, cb) {
     // TODO: for now only fetches non-anonymous backers
-    db.getPool().query("SELECT pl.amount, u.username AS name FROM pledges AS pl LEFT JOIN users AS u ON pl.user = u.id " +
-        "WHERE pl.project=? AND pl.anonymous='false'", [projectId], function (err, rows) {
+    let sql = "SELECT user AS name, amount FROM pledges WHERE project=? AND anonymous='false'";
+    // let sql = "SELECT pl.amount, u.username AS name FROM pledges AS pl LEFT JOIN users AS u ON pl.user = u.id " +
+    //     "WHERE pl.project=? AND pl.anonymous='false'",
+    db.getPool().query(sql, [projectId], function (err, rows) {
         cb(err, rows);
     });
 }

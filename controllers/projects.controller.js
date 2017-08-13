@@ -30,7 +30,7 @@ exports.create = function (req, res) {
         if (err || rows.length === 0) {
             res.status(400).send("Malformed project data\nError details: " + err);
         } else {
-            let projectId;
+            let projectId = "Error: Failed to create a project";
             for (let i = 0; i < rows.length; i++) {
                 if (rows[i].constructor === Array) {
                     if (rows[i][0].projectId) {

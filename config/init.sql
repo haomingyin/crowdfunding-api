@@ -12,3 +12,4 @@ ALTER TABLE pledges ADD CONSTRAINT pledges_users_id_fk FOREIGN KEY (user) REFERE
 CREATE TABLE IF NOT EXISTS creates ( creator INT NOT NULL, name VARCHAR(30) NOT NULL, project INT NOT NULL, CONSTRAINT creates_creator_project_pk PRIMARY KEY (creator, project), CONSTRAINT creates_users_id_fk FOREIGN KEY (creator) REFERENCES users (id), CONSTRAINT creates_projects_id_fk FOREIGN KEY (project) REFERENCES projects (id) );
 CREATE OR REPLACE VIEW project_detail AS SELECT * FROM projects AS p LEFT JOIN (SELECT project, SUM(amount) AS "currentPledged", COUNT(*) AS "numberOfBackers" FROM pledges AS pl GROUP BY pl.project) AS pl ON p.id = pl.project;
 INSERT INTO users (username, password, location, email) VALUES ('haoming', '12345', 'Christchurch', 'hyi25@uclive.ac.nz');
+INSERT INTO users (username, password, location, email) VALUES ('user', '12345', 'Christchurch', 'user@uclive.ac.nz');

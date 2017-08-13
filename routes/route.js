@@ -23,7 +23,7 @@ exports = module.exports = function (app) {
     app.get("/projects/:id/image", projects.getImage);
     app.put("/projects/:id/image", mw.validateToken, mw.validateProjectOwner, projects.updateImage);
 
-    app.post("/projects/:id/pledge", mw.validateToken, mw.validateNotOwner, projects.pledge);
+    app.post("/projects/:id/pledge", mw.validateToken, mw.validateNotOwner, mw.validatePledgeJSON, projects.pledge);
 
     // routes for rewards
     app.get("/projects/:id/rewards", rewards.get);
