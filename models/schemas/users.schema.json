@@ -9,7 +9,7 @@
             "properties": {
                 "id": {
                     "type": "number",
-                    "required": false
+                    "required": true
                 },
                 "username": {
                     "type": "string",

@@ -6,6 +6,10 @@
  */
 
 const projects = require("../models/projects.model");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const moment = require("moment");
 
 /**
  * View all current projects
@@ -75,14 +79,52 @@ exports.update = function (req, res) {
  * View project images
  */
 exports.getImage = function (req, res) {
-    return null;
+    projects.getImageUri(req.params.id, function (err, rows) {
+        let filePath = path.join(__dirname, '..', rows[0].imageUri);
+        res.set("Content-Type", "image/png");
+        fs.readFile(filePath, function (err, data) {
+            if (rows[0].imageUri === "uploads/unavailable.png") {
+                res.status(404).send(data);
+            } else {
+                res.status(200).send(data);
+            }
+        });
+    });
 };
 
-/**
- * Update project image
- */
-exports.updateImage = function (req, res) {
-    return null;
+
+let upload = multer({
+    'storage': multer.diskStorage({
+        'destination': function (req, file, cb) {
+            cb(null, path.join(__dirname, '..', 'uploads'));
+        },
+        'filename': function (req, file, cb) {
+            if (file.mimetype === 'image/png') {
+                req.imageUri = `project-${req.params.id}-${moment().format('YMMDDHHmmSSS')}.png`;
+                cb(null, req.imageUri)
+            } else if (file.mimetype === 'image/jpeg') {
+                req.imageUri = `project-${req.params.id}-${moment().format('YMMDDHHmmSSS')}.jpeg`;
+                cb(null, req.imageUri)
+            } else {
+                cb("Error: The server only accept 'jpeg' or 'png' image files");
+            }
+        }
+    })
+}).any();
+
+exports.uploadImage = function (req, res) {
+    upload(req, res, function (err) {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            projects.updateProjectImage(`uploads/${req.imageUri}`, req.params.id, function (err1, result) {
+                if (err1) {
+                    res.status(500).send(err1);
+                }
+            });
+            res.status(200).send("OK");
+        }
+    });
 };
 
 /**

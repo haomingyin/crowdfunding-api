@@ -2,6 +2,7 @@
  * Created by hyi25 on 10/08/17.
  */
 const db = require("../config/db");
+const fs = require("fs");
 
 a = {};
 // reg exp for ID number
@@ -74,3 +75,16 @@ jwt.verify(jwt.sign({id: 1, name: "haoming"}, "abc", {expiresIn: 30}), "abc", fu
 //
 // let validation = validate(userInfo);
 // console.log(`result: ${validation}\nerrors: ${JSON.stringify(validate.errors)}`);
+
+// fs.readFile("../uploads/test.png", function (err, data) {
+//     if (err) throw err;
+//     fs.writeFile("../uploads/test2.png", data, function (err2) {
+//         if (err2) throw err2;
+//     });
+// });
+
+const path = require("path");
+console.log(path.join(__dirname, "..", "uploads")); // how to get parent dir
+
+const moment = require("moment");
+console.log(moment().format("YMMDDHHmmSSS"));

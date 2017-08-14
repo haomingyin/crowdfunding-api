@@ -22,7 +22,8 @@ function getCreateProjectSQL(project) {
     let sql = "START TRANSACTION; ";
 
     sql += "INSERT INTO projects (title, subtitle, description, imageUri, target) VALUES (?, ?, ?, ?, ?); ";
-    let params = [project.title, project.subtitle, project.description, project.imageUri, project.target];
+    // let params = [project.title, project.subtitle, project.description, project.imageUri, project.target];
+    let params = [project.title, project.subtitle, project.description, "uploads/unavailable.png", project.target];
 
     sql += "SET @projectId = LAST_INSERT_ID(); ";
 
@@ -195,4 +196,16 @@ exports.pledge = function (params, cb) {
     db.getPool().query(sql, params, function (err, result) {
         cb(err, result);
     })
+};
+
+exports.updateProjectImage = function (imageUri, projectId, cb) {
+    let sql = "UPDATE projects SET imageUri=? WHERE id=?;";
+    db.getPool().query(sql, [imageUri, projectId], function (err, result) {
+        cb(err, result);
+    });
+};
+
+exports.getImageUri = function (projectId, cb) {
+    let sql = "SELECT imageUri FROM projects WHERE id=?";
+    db.getPool().query(sql, [projectId], cb);
 };

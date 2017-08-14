@@ -21,7 +21,7 @@ exports = module.exports = function (app) {
     app.put("/projects/:id", mw.validateToken, mw.validateProjectOwner, projects.update);
 
     app.get("/projects/:id/image", projects.getImage);
-    app.put("/projects/:id/image", mw.validateToken, mw.validateProjectOwner, projects.updateImage);
+    app.put("/projects/:id/image", mw.validateToken, mw.validateProjectOwner, projects.uploadImage);
 
     app.post("/projects/:id/pledge", mw.validateToken, mw.validateNotOwner, mw.validatePledgeJSON, projects.pledge);
 

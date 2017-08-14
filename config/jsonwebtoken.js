@@ -13,7 +13,7 @@ exports.JWT_INVALID = JWT_INVALID = 0;
 
 exports.sign = function (data) {
     // for now, no algorithm is used to shorten the token
-    return jwt.sign({id: data.id}, PRIVATE_KEY, {expiresIn: EXPIRATION, algorithm: "none"});
+    return jwt.sign({id: data.id}, PRIVATE_KEY, {expiresIn: EXPIRATION});
 };
 
 /**
@@ -25,7 +25,7 @@ exports.sign = function (data) {
 exports.verify = function (token) {
     try {
         // no algorithm is used, so use decode(), otherwise verify() should be used
-        let decoded = {"decoded": jwt.decode(token, PRIVATE_KEY), "status": JWT_VALID};
+        let decoded = {"decoded": jwt.verify(token, PRIVATE_KEY), "status": JWT_VALID};
         // if no error, then token is valid. Check if the valid token has been invoked
         if (isInvoked(token)) {
             return {status: JWT_INVOKED};

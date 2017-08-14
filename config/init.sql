@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS pledges ( id INT AUTO_INCREMENT PRIMARY KEY, user INT NOT NULL, project INT NOT NULL, reward INT NULL, amount INTEGER DEFAULT '0' NOT NULL, anonymous VARCHAR(5) DEFAULT "false" NOT NULL);
+CREATE TABLE IF NOT EXISTS pledges ( id INT AUTO_INCREMENT PRIMARY KEY, user INT NOT NULL, project INT NOT NULL, reward INT NULL, amount INTEGER DEFAULT '0' NOT NULL, anonymous VARCHAR(5) DEFAULT "false" NOT NULL, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
 CREATE INDEX pledges_projects_id_fk ON pledges (project);
 CREATE INDEX pledges_rewards_id_fk ON pledges (reward);
 CREATE INDEX pledges_users_id_fk ON pledges (user);

@@ -19,7 +19,7 @@ exports.validateToken = function (req, res, next) {
         req.user = validation.decoded; // put decoded user info into req.user
         next();
     } else {
-        res.status(401).send("Unauthorized\n" + validation.decoded);
+        res.status(401).send("Unauthorized\n");
     }
 };
 
