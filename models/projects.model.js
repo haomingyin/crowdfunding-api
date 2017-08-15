@@ -8,9 +8,7 @@ const rewards = require("./rewards.model");
  */
 exports.getProjectOwner = function (params, cb) {
     let sql = "SELECT * FROM creates WHERE creator=? AND project=?;";
-    db.getPool().query(sql, params, function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query(sql, params, cb);
 };
 
 /**
@@ -103,21 +101,15 @@ exports.getAll = function (offset, limit, cb) {
  */
 exports.toggle = function (params, cb) {
     let sql = "UPDATE projects SET open=? WHERE id=?";
-    db.getPool().query(sql, params, function (err, result) {
-        cb(err, result);
-    });
+    db.getPool().query(sql, params, cb);
 };
 
 function fetchProjectDetail(projectId, cb) {
-    db.getPool().query("SELECT * FROM project_detail WHERE id=?", [projectId], function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query("SELECT * FROM project_detail WHERE id=?", [projectId], cb);
 }
 
 function fetchCreators(projectId, cb) {
-    db.getPool().query("SELECT creator AS id, name FROM creates WHERE project=?", [projectId], function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query("SELECT creator AS id, name FROM creates WHERE project=?", [projectId], cb);
 }
 
 function fetchBackers(projectId, cb) {
@@ -125,9 +117,7 @@ function fetchBackers(projectId, cb) {
     let sql = "SELECT user AS name, amount FROM pledges WHERE project=? AND anonymous='false'";
     // let sql = "SELECT pl.amount, u.username AS name FROM pledges AS pl LEFT JOIN users AS u ON pl.user = u.id " +
     //     "WHERE pl.project=? AND pl.anonymous='false'",
-    db.getPool().query(sql, [projectId], function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query(sql, [projectId], cb);
 }
 
 function formatProjectDetail(project, creators, rewards, backers) {
@@ -193,16 +183,12 @@ exports.getProjectDetail = function (projectId, cb) {
  */
 exports.pledge = function (params, cb) {
     let sql = "INSERT INTO pledges (user, project, reward, amount, anonymous) VALUES (?, ?, ?, ?, ?);";
-    db.getPool().query(sql, params, function (err, result) {
-        cb(err, result);
-    })
+    db.getPool().query(sql, params, cb);
 };
 
 exports.updateProjectImage = function (imageUri, projectId, cb) {
     let sql = "UPDATE projects SET imageUri=? WHERE id=?;";
-    db.getPool().query(sql, [imageUri, projectId], function (err, result) {
-        cb(err, result);
-    });
+    db.getPool().query(sql, [imageUri, projectId], cb);
 };
 
 exports.getImageUri = function (projectId, cb) {

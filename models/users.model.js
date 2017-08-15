@@ -7,9 +7,7 @@ const db = require("../config/db");
  */
 exports.addUser = function (param, cb) {
     const sql = "INSERT INTO users (username, password, location, email) VALUES (?, ?, ?, ?);";
-    db.getPool().query(sql, param, function (err, result) {
-        cb(err, result);
-    });
+    db.getPool().query(sql, param, cb);
 };
 
 /**
@@ -19,9 +17,7 @@ exports.addUser = function (param, cb) {
  */
 exports.login = function (param, cb) {
     const sql = "SELECT id, username, location, email FROM users WHERE username=? AND password=?";
-    db.getPool().query(sql, param, function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query(sql, param, cb);
 };
 
 /**
@@ -31,9 +27,7 @@ exports.login = function (param, cb) {
  */
 exports.getUserById = function (id, cb) {
     let sql = "SELECT id, username, location, email FROM users WHERE id=?";
-    db.getPool().query(sql, [id], function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query(sql, [id], cb);
 };
 
 /**
@@ -43,16 +37,12 @@ exports.getUserById = function (id, cb) {
  */
 exports.delete = function (id, cb) {
     let sql = "DELETE FROM users WHERE id=?;";
-    db.getPool().query(sql, [id], function (err, result) {
-        cb(err, result);
-    });
+    db.getPool().query(sql, [id], cb);
 };
 
 exports.update = function (params, cb) {
     let sql = "UPDATE users SET username=?, password=?, location=?, email=? WHERE id=?;";
-    db.getPool().query(sql, params, function (err, result) {
-        cb(err, result);
-    });
+    db.getPool().query(sql, params, cb);
 };
 
 /**
@@ -60,7 +50,5 @@ exports.update = function (params, cb) {
  * @param cb
  */
 exports.getAllUsers = function (cb) {
-    db.getPool().query("SELECT * FROM users;", function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query("SELECT * FROM users;", cb);
 };

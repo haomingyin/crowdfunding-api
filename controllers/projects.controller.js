@@ -66,7 +66,7 @@ exports.get = function (req, res) {
  * Update project (open/close)
  */
 exports.update = function (req, res) {
-    projects.toggle([String(req.body.open), req.params.id], function (err, result) {
+    projects.toggle([String(req.body.open), req.params.id], function (err) {
         if (err) {
             res.status(400).send("Malformed project data\nError details: " + err);
         } else {
@@ -80,15 +80,19 @@ exports.update = function (req, res) {
  */
 exports.getImage = function (req, res) {
     projects.getImageUri(req.params.id, function (err, rows) {
-        let filePath = path.join(__dirname, '..', rows[0].imageUri);
-        res.set("Content-Type", "image/png");
-        fs.readFile(filePath, function (err, data) {
-            if (rows[0].imageUri === "uploads/unavailable.png") {
-                res.status(404).send(data);
-            } else {
-                res.status(200).send(data);
-            }
-        });
+        if (err || rows.length === 0) {
+            res.status(400).send("Malformed request\nError: Project does not exist")
+        } else {
+            let filePath = path.join(__dirname, '..', rows[0].imageUri);
+            res.set("Content-Type", "image/png");
+            fs.readFile(filePath, function (err, data) {
+                if (rows[0].imageUri === "uploads/unavailable.png") {
+                    res.status(404).send(data);
+                } else {
+                    res.status(200).send(data);
+                }
+            });
+        }
     });
 };
 

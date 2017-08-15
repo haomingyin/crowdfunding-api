@@ -7,9 +7,7 @@ const db = require("../config/db");
  */
 exports.getByProjectID = function (projectId, cb) {
     let sql = "SELECT id, amount, description FROM rewards WHERE project=?;";
-    db.getPool().query(sql, [projectId], function (err, rows) {
-        cb(err, rows);
-    });
+    db.getPool().query(sql, [projectId], cb);
 };
 
 function getUpdateRewardsSQL(projectId, rewards) {

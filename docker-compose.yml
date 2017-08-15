@@ -14,5 +14,5 @@ services:
     image: "mysql:5.7"
     environment:
       - MYSQL_ROOT_PASSWORD=secret
-    ports:
-      - "6612:3306"
+#    ports:
+#      - "6612:3306"
