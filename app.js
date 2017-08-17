@@ -6,7 +6,9 @@ const db = require('./config/db');
 const express = require('./config/express');
 
 const app = express();
-const PORT = 4879;
+let PORT = 4879;
+
+if (process.env.SENG365_DOCKER_FLAG) PORT = 4941;
 
 // function that set the app to listen to a specific port
 let listen = function () {

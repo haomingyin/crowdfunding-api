@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "4879:4879"
+      - "4879:4941"
     environment:
       - SENG365_MYSQL_HOST=mysql
       - SENG365_MYSQL_PORT=3306
