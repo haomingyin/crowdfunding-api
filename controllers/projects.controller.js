@@ -10,6 +10,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const moment = require("moment");
+const _ = require("lodash");
 
 /**
  * View all current projects
@@ -56,8 +57,12 @@ exports.get = function (req, res) {
         if (err) {
             res.status(500).send("Failed to fetch project details\nError details: " + err);
         } else {
-            res.set('Content-Type', 'application/json');
-            res.status(200).send(projectDetail);
+            if (_.isEmpty(projectDetail)) {
+                res.status(404).send("Project does not exist");
+            } else {
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(projectDetail);
+            }
         }
     });
 };

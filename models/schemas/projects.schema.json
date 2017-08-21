@@ -25,6 +25,7 @@
         "target": {
             "type": "number",
             "minimum": 0,
+            "maximum": 1000000000000,
             "required": true
         },
         "creators": {

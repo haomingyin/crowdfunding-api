@@ -14,7 +14,7 @@
                 "amount": {
                     "type": "number",
                     "required": true,
-                    "minimum": 0
+                    "minimum": 1
                 },
                 "description": {
                     "type": "string",

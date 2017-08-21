@@ -27,7 +27,7 @@ exports.create = function (req, res) {
  * Login an user into the system
  */
 exports.login = function (req, res) {
-    users.login([req.body.username, req.body.password], function (err, rows) {
+    users.login([req.query.username, req.query.password], function (err, rows) {
         if (err || rows.length !== 1) {
             res.status(400).send("Invalid username/password supplied\n")
         } else {
