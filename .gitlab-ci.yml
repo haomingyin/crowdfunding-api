@@ -15,4 +15,4 @@ deploy:
   stage: deploy
   script:
   - docker-compose down --remove-orphans
-  - docker-compose up -d
+  - docker-compose up
