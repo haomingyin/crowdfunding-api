@@ -15,11 +15,11 @@ function getUpdateRewardsSQL(projectId, rewards) {
     let params = [];
 
     for (let i = 0; i < rewards.length; i++) {
-        sql += "UPDATE rewards SET amount=?, description=? WHERE project=? AND id=?;";
+        sql += "INSERT INTO rewards (amount, description, project) VALUES (?, ?, ?);";
         params.push(rewards[i].amount);
         params.push(rewards[i].description);
         params.push(projectId);
-        params.push(rewards[i].id);
+        // params.push(rewards[i].id);
     }
 
     sql += "COMMIT;";
