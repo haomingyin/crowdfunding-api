@@ -29,7 +29,7 @@ let initialize = function () {
         db.initialize(function (err) {
             // if fail to initialize db, wait for 2 second then redo it.
             if (err) {
-                setTimeout(initialize, 500);
+                setTimeout(initialize, 10000);
             } else {
                 if (Number(process.env.SENG365_DOCKER_FLAG) === 0) {
                     throw "Docker Flag is set to 0, terminate this instance so that it can run locally";

@@ -13,9 +13,9 @@ exports.connect = function (cb) {
     state.pool = mysql.createPool({
         host: process.env.SENG365_MYSQL_HOST || 'localhost',
         port: process.env.SENG365_MYSQL_PORT || 6033,
-        user: 'root',
+        user: process.env.SENG365_MYSQL_USER || 'root',
         password: 'secret',
-        database: 'mysql',
+        database: process.env.SENG365_MYSQL_DATABASE || 'mysql',
         multipleStatements: true,
         connectionLimit: 100
     });
@@ -41,7 +41,7 @@ exports.initialize = function (cb) {
                     console.log(err2);
                     cb(err2);
                 } else {
-                    console.log(result);
+                    // console.log(result);
                     cb(null);
                 }
             });
