@@ -18,17 +18,17 @@ exports = module.exports = function (app) {
     app.get("/api/v1/projects", projects.listAll);
     app.post("/api/v1/projects", mw.validateToken, mw.validateProjectJSON, projects.create);
 
-    app.get("/api/v1/projects/:id", projects.get);
-    app.put("/api/v1/projects/:id", mw.validateToken, mw.validateProjectOwner, projects.update);
+    app.get("/api/v1/projects/:id", mw.isProjectExisted, projects.get);
+    app.put("/api/v1/projects/:id", mw.validateToken, mw.isProjectExisted, mw.validateProjectOwner, projects.update);
 
-    app.get("/api/v1/projects/:id/image", projects.getImage);
-    app.put("/api/v1/projects/:id/image", mw.validateToken, mw.validateProjectOwner, projects.uploadImage);
+    app.get("/api/v1/projects/:id/image", mw.isProjectExisted, projects.getImage);
+    app.put("/api/v1/projects/:id/image", mw.validateToken, mw.isProjectExisted, mw.validateProjectOwner, projects.uploadImage);
 
-    app.post("/api/v1/projects/:id/pledge", mw.validateToken, mw.validateNotOwner, mw.validatePledgeJSON, projects.pledge);
+    app.post("/api/v1/projects/:id/pledge", mw.validateToken, mw.isProjectExisted, mw.validateNotOwner, mw.validatePledgeJSON, projects.pledge);
 
     // routes for rewards
-    app.get("/api/v1/projects/:id/rewards", rewards.get);
-    app.put("/api/v1/projects/:id/rewards", mw.validateToken, mw.validateProjectOwner, mw.validateRewardJSON, rewards.update);
+    app.get("/api/v1/projects/:id/rewards", mw.isProjectExisted, rewards.get);
+    app.put("/api/v1/projects/:id/rewards", mw.validateToken, mw.isProjectExisted, mw.validateProjectOwner, mw.validateRewardJSON, rewards.update);
 
     // routes for users
     app.post("/api/v1/users", mw.validateUserJSON, users.create);

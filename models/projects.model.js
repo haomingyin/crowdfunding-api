@@ -104,6 +104,11 @@ exports.toggle = function (params, cb) {
     db.getPool().query(sql, params, cb);
 };
 
+/**
+ * Retrieve project details with given project id
+ * @param projectId
+ * @param cb
+ */
 function fetchProjectDetail(projectId, cb) {
     db.getPool().query("SELECT * FROM project_detail WHERE id=?", [projectId], cb);
 }
@@ -120,6 +125,14 @@ function fetchBackers(projectId, cb) {
     db.getPool().query(sql, [projectId], cb);
 }
 
+/**
+ * Format the retrieved project detail sql row to a JSON object
+ * @param project
+ * @param creators
+ * @param rewards
+ * @param backers
+ * @returns {*}
+ */
 function formatProjectDetail(project, creators, rewards, backers) {
     try {
         return {
@@ -152,7 +165,7 @@ function formatProjectDetail(project, creators, rewards, backers) {
 /**
  * Get projects details
  * @param projectId
- * @param cb
+ * @param cb(err, projectDetailJSON)
  */
 exports.getProjectDetail = function (projectId, cb) {
     fetchProjectDetail(projectId, function (err1, projectDetail) {
@@ -186,12 +199,36 @@ exports.pledge = function (params, cb) {
     db.getPool().query(sql, params, cb);
 };
 
+/**
+ * Update project imageUri with given uri and project id
+ * @param imageUri
+ * @param projectId
+ * @param cb
+ */
 exports.updateProjectImage = function (imageUri, projectId, cb) {
     let sql = "UPDATE projects SET imageUri=? WHERE id=?;";
     db.getPool().query(sql, [imageUri, projectId], cb);
 };
 
+/**
+ * Get Image Uri with given project id
+ * @param projectId
+ * @param cb
+ */
 exports.getImageUri = function (projectId, cb) {
     let sql = "SELECT imageUri FROM projects WHERE id=?";
     db.getPool().query(sql, [projectId], cb);
+};
+
+/**
+ * Check if a project is existed or not
+ * @param projectId
+ * @return true if project exists, otherwise false
+ */
+exports.isProjectExisted = function (projectId, cb) {
+    let sql = "SELECT COUNT(*) AS cnt FROM projects WHERE id=?";
+    db.getPool().query(sql, [projectId], function (err, rows) {
+        if (err) return cb(err, false);
+        return cb(null, rows[0].cnt === 1);
+    });
 };

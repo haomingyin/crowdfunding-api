@@ -156,3 +156,17 @@ exports.validatePledgeJSON = function (req, res, next) {
         res.status(400).send("Malformed pledge data\nError details:" + err);
     }
 };
+
+exports.isProjectExisted = function (req, res, next) {
+    try {
+        projects.isProjectExisted(Number(req.params.id), function (err, result) {
+            if (err || !result) {
+                res.status(404).send("Not found -- project does not exist");
+            } else {
+                next();
+            }
+        });
+    } catch (err) {
+        res.status(404).send("Not found -- project does not exist");
+    }
+};

@@ -146,7 +146,7 @@ exports.pledge = function (req, res) {
     } else {
         projects.pledge([b.id, req.params.id, null, b.amount, String(b.anonymous)], function (err, result) {
             if (err || result.affectedRows === 0) {
-                res.status(400).send("Bad user, project, or pledge details\nError details: " + err);
+                res.status(400).send("Malformed request\nBad user, project, or pledge details\nError details: " + err);
             } else {
                 res.status(200).send("OK");
             }
