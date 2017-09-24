@@ -32,7 +32,7 @@ exports = module.exports = function (app) {
 
     // routes for users
     app.post("/api/v1/users", mw.validateUserJSON, users.create);
-    //app.get("/api/v1/users", users.getAll);
+    app.get("/api/v1/users", users.getAll); // for testing
 
     app.post("/api/v1/users/login", users.login);
 
